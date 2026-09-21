@@ -3,6 +3,9 @@
 自宅やオフィスのWiFiに簡単に接続するためのQRコードを生成するWebツールです。  
 カメラでスキャンするだけで、SSIDやパスワードを手動入力することなくワンタップでWi-Fiに接続できます。
 
+> 🌐 **今すぐWebで使う（ブラウザ版）**:  
+> 👉 **[https://matsuda-works.github.io/wifiQR/](https://matsuda-works.github.io/wifiQR/)**
+
 ---
 
 ## 🌟 主な特徴
@@ -18,9 +21,8 @@
 
 ## 🚀 使い方
 
-1. リポジトリをクローンまたはダウンロードします。
-2. `index.html` をお使いのブラウザ（Google Chrome, Edge, Safari, Firefoxなど）で開きます。
-3. 以下の情報を入力・選択します：
+1. **[Web公開版（GitHub Pages）](https://matsuda-works.github.io/wifiQR/)** を開くか、またはリポジトリをクローンして `index.html` をブラウザで開きます。
+2. 以下の情報を入力・選択します：
    - **ネットワーク名 (SSID)**: お使いのWi-Fiネットワーク名
    - **パスワード**: Wi-Fi接続パスワード
    - **セキュリティ**: 暗号化方式（WPA/WPA2/WPA3、WEP、または なし）
