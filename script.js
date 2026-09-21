@@ -17,9 +17,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const clearHistoryBtn = document.getElementById('clear-history-btn');
     const saveHistoryCheckbox = document.getElementById('save-history');
     const savePasswordCheckbox = document.getElementById('save-password');
+    const togglePasswordBtn = document.getElementById('toggle-password-btn');
 
     const STORAGE_KEY = 'wifi_connect_qr_history';
     let qrcode = null;
+
+    // パスワード表示／非表示切り替え
+    if (togglePasswordBtn) {
+        togglePasswordBtn.addEventListener('click', () => {
+            const isPassword = passwordInput.type === 'password';
+            passwordInput.type = isPassword ? 'text' : 'password';
+            togglePasswordBtn.textContent = isPassword ? '隠す' : '表示';
+        });
+    }
+
+    // ブラウザの意図しないログイン誤認オートフィル（k2matsuda等）をクリア
+    window.addEventListener('load', () => {
+        setTimeout(() => {
+            const history = getHistory();
+            const isSavedSsid = history.some(item => item.ssid === ssidInput.value);
+            // 履歴にない値が勝手に流し込まれている場合はクリア
+            if (ssidInput.value && !isSavedSsid) {
+                ssidInput.value = '';
+                passwordInput.value = '';
+            }
+        }, 150);
+    });
 
     // 履歴保存の連動制御（履歴OFFならパスワード保存もOFF）
     saveHistoryCheckbox.addEventListener('change', () => {

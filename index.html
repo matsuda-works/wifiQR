@@ -18,12 +18,18 @@
         </header>
 
         <div class="form-card">
+            <!-- ブラウザのログイン誤認（自動入力）を防止するためのダミーフィールド -->
+            <div style="position: absolute; width: 0; height: 0; overflow: hidden; opacity: 0; pointer-events: none;" aria-hidden="true">
+                <input type="text" tabindex="-1" autocomplete="username">
+                <input type="password" tabindex="-1" autocomplete="current-password">
+            </div>
+
             <div class="input-group">
                 <div class="label-row">
                     <label for="ssid">ネットワーク名 (SSID)</label>
                     <span id="history-badge" class="history-badge hidden">候補あり</span>
                 </div>
-                <input type="text" id="ssid" list="ssid-suggestions" placeholder="例: MyHomeWiFi" autocomplete="off">
+                <input type="text" id="ssid" list="ssid-suggestions" placeholder="例: MyHomeWiFi" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" data-form-type="other" data-lpignore="true">
                 <datalist id="ssid-suggestions"></datalist>
 
                 <!-- 履歴・保存済み候補チップ -->
@@ -37,9 +43,12 @@
             </div>
 
             <div class="input-group">
-                <label for="password">パスワード</label>
+                <div class="label-row">
+                    <label for="password">パスワード</label>
+                    <button type="button" id="toggle-password-btn" class="text-link-btn toggle-visibility-btn">表示</button>
+                </div>
                 <div class="password-wrapper">
-                    <input type="password" id="password" placeholder="••••••••" autocomplete="off">
+                    <input type="password" id="password" placeholder="••••••••" autocomplete="new-password" data-lpignore="true" data-form-type="other">
                 </div>
             </div>
 

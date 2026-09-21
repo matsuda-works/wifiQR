@@ -204,6 +204,18 @@ button:active {
     box-shadow: none;
 }
 
+.toggle-visibility-btn {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.toggle-visibility-btn:hover {
+    color: var(--primary);
+    text-decoration: underline;
+}
+
 .history-chips {
     display: flex;
     flex-wrap: wrap;
