@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WiFi QR Code Generator</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>WiFi Connect QR</h1>
+            <p>SSIDとパスワードを入力して、接続用のQRコードを作成します。</p>
+        </header>
+
+        <div class="form-card">
+            <div class="input-group">
+                <label for="ssid">ネットワーク名 (SSID)</label>
+                <input type="text" id="ssid" placeholder="例: MyHomeWiFi" autocomplete="off">
+            </div>
+
+            <div class="input-group">
+                <label for="password">パスワード</label>
+                <div class="password-wrapper">
+                    <input type="password" id="password" placeholder="••••••••" autocomplete="off">
+                </div>
+            </div>
+
+            <div class="input-row">
+                <div class="input-group">
+                    <label for="encryption">セキュリティ</label>
+                    <select id="encryption">
+                        <option value="WPA">WPA/WPA2/WPA3 (推奨)</option>
+                        <option value="WEP">WEP</option>
+                        <option value="nopass">なし</option>
+                    </select>
+                </div>
+                <div class="input-group hidden-option" id="hidden-group">
+                    <label for="hidden">非公開ネットワーク</label>
+                    <div class="toggle-wrapper">
+                        <input type="checkbox" id="hidden">
+                        <label class="toggle-label" for="hidden"></label>
+                    </div>
+                </div>
+            </div>
+
+            <button id="generate-btn">QRコードを生成</button>
+        </div>
+
+        <div id="qr-result-container" class="qr-result-container hidden">
+            <div class="qr-card">
+                <div id="qrcode"></div>
+                <div class="qr-info">
+                    <h2 id="display-ssid"></h2>
+                    <p>このQRコードをカメラでスキャンしてWiFiに接続できます。</p>
+                </div>
+                <button id="download-btn" class="secondary-btn">画像を保存</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
