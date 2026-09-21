@@ -9,7 +9,146 @@ document.addEventListener('DOMContentLoaded', () => {
     const displaySsid = document.getElementById('display-ssid');
     const downloadBtn = document.getElementById('download-btn');
 
+    // 履歴・候補機能の要素
+    const ssidSuggestions = document.getElementById('ssid-suggestions');
+    const historyContainer = document.getElementById('history-container');
+    const historyChips = document.getElementById('history-chips');
+    const historyBadge = document.getElementById('history-badge');
+    const clearHistoryBtn = document.getElementById('clear-history-btn');
+    const saveHistoryCheckbox = document.getElementById('save-history');
+    const savePasswordCheckbox = document.getElementById('save-password');
+
+    const STORAGE_KEY = 'wifi_connect_qr_history';
     let qrcode = null;
+
+    // 履歴保存の連動制御（履歴OFFならパスワード保存もOFF）
+    saveHistoryCheckbox.addEventListener('change', () => {
+        if (!saveHistoryCheckbox.checked) {
+            savePasswordCheckbox.checked = false;
+            savePasswordCheckbox.disabled = true;
+        } else {
+            savePasswordCheckbox.disabled = false;
+        }
+    });
+
+    // 履歴の読み込みと表示
+    function getHistory() {
+        try {
+            const data = localStorage.getItem(STORAGE_KEY);
+            return data ? JSON.parse(data) : [];
+        } catch (e) {
+            console.error('Failed to load history:', e);
+            return [];
+        }
+    }
+
+    function saveHistory(list) {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+        } catch (e) {
+            console.error('Failed to save history:', e);
+        }
+    }
+
+    function renderHistory() {
+        const history = getHistory();
+
+        if (history.length === 0) {
+            historyContainer.classList.add('hidden');
+            historyBadge.classList.add('hidden');
+            ssidSuggestions.innerHTML = '';
+            historyChips.innerHTML = '';
+            return;
+        }
+
+        historyContainer.classList.remove('hidden');
+        historyBadge.classList.remove('hidden');
+
+        // datalistの候補を更新
+        ssidSuggestions.innerHTML = history
+            .map(item => `<option value="${escapeHtml(item.ssid)}">${item.encryption !== 'nopass' ? '🔒 ' : ''}${escapeHtml(item.ssid)}</option>`)
+            .join('');
+
+        // チップ（ボタン）を生成
+        historyChips.innerHTML = '';
+        history.forEach((item, index) => {
+            const chip = document.createElement('div');
+            chip.className = 'chip';
+            chip.title = `クリックして ${item.ssid} を入力`;
+
+            const icon = item.encryption === 'nopass' ? '📶' : '🔒';
+            chip.innerHTML = `
+                <span class="chip-lock-icon">${icon}</span>
+                <span class="chip-text">${escapeHtml(item.ssid)}</span>
+                <span class="chip-delete" title="この候補を削除" data-index="${index}">×</span>
+            `;
+
+            // チップクリックでフォームに自動入力
+            chip.addEventListener('click', (e) => {
+                if (e.target.classList.contains('chip-delete')) return;
+                applyHistoryItem(item);
+            });
+
+            // 削除ボタン
+            const deleteBtn = chip.querySelector('.chip-delete');
+            deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                removeHistoryItem(index);
+            });
+
+            historyChips.appendChild(chip);
+        });
+    }
+
+    function applyHistoryItem(item) {
+        ssidInput.value = item.ssid || '';
+        encryptionInput.value = item.encryption || 'WPA';
+        hiddenInput.checked = !!item.isHidden;
+        if (item.password) {
+            passwordInput.value = item.password;
+        }
+        ssidInput.focus();
+    }
+
+    function removeHistoryItem(index) {
+        const history = getHistory();
+        history.splice(index, 1);
+        saveHistory(history);
+        renderHistory();
+    }
+
+    clearHistoryBtn.addEventListener('click', () => {
+        if (confirm('保存されたWi-Fi候補をすべて消去しますか？')) {
+            localStorage.removeItem(STORAGE_KEY);
+            renderHistory();
+        }
+    });
+
+    function addOrUpdateHistory(entry) {
+        let history = getHistory();
+        // 既存の同一SSIDを除去して先頭に追加（最新順）
+        history = history.filter(item => item.ssid.toLowerCase() !== entry.ssid.toLowerCase());
+        history.unshift(entry);
+        // 最大10件まで保持
+        if (history.length > 10) {
+            history = history.slice(0, 10);
+        }
+        saveHistory(history);
+        renderHistory();
+    }
+
+    function escapeHtml(str) {
+        return (str || '').replace(/[&<>"']/g, (m) => ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+        }[m]));
+    }
+
+    // 初回レンダリング
+    renderHistory();
 
     generateBtn.addEventListener('click', () => {
         const ssid = ssidInput.value.trim();
@@ -20,6 +159,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!ssid) {
             alert('SSIDを入力してください。');
             return;
+        }
+
+        // 履歴保存の処理
+        if (saveHistoryCheckbox.checked) {
+            addOrUpdateHistory({
+                ssid: ssid,
+                encryption: encryption,
+                isHidden: isHidden,
+                password: savePasswordCheckbox.checked ? password : ''
+            });
         }
 
         // WiFi QR Code Format: WIFI:S:<SSID>;T:<WPA|WEP|>;P:<password>;H:<true|false>;;
@@ -75,3 +224,4 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+

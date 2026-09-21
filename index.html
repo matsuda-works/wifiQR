@@ -19,8 +19,21 @@
 
         <div class="form-card">
             <div class="input-group">
-                <label for="ssid">ネットワーク名 (SSID)</label>
-                <input type="text" id="ssid" placeholder="例: MyHomeWiFi" autocomplete="off">
+                <div class="label-row">
+                    <label for="ssid">ネットワーク名 (SSID)</label>
+                    <span id="history-badge" class="history-badge hidden">候補あり</span>
+                </div>
+                <input type="text" id="ssid" list="ssid-suggestions" placeholder="例: MyHomeWiFi" autocomplete="off">
+                <datalist id="ssid-suggestions"></datalist>
+
+                <!-- 履歴・保存済み候補チップ -->
+                <div id="history-container" class="history-container hidden">
+                    <div class="history-header">
+                        <span class="history-title">よく使う・履歴候補:</span>
+                        <button type="button" id="clear-history-btn" class="text-link-btn">すべて消去</button>
+                    </div>
+                    <div id="history-chips" class="history-chips"></div>
+                </div>
             </div>
 
             <div class="input-group">
@@ -46,6 +59,20 @@
                         <label class="toggle-label" for="hidden"></label>
                     </div>
                 </div>
+            </div>
+
+            <!-- 履歴保存設定 -->
+            <div class="save-options">
+                <label class="custom-checkbox">
+                    <input type="checkbox" id="save-history" checked>
+                    <span class="checkmark"></span>
+                    <span class="checkbox-text">このWi-Fiを候補リストに保存する</span>
+                </label>
+                <label class="custom-checkbox sub-checkbox">
+                    <input type="checkbox" id="save-password">
+                    <span class="checkmark"></span>
+                    <span class="checkbox-text">パスワードも記憶する <span class="privacy-note">(お使いの端末内にのみ保存)</span></span>
+                </label>
             </div>
 
             <button id="generate-btn">QRコードを生成</button>

@@ -142,6 +142,198 @@ button:active {
     box-shadow: none;
 }
 
+.label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.label-row label {
+    margin-bottom: 0;
+}
+
+.history-badge {
+    font-size: 0.725rem;
+    padding: 0.15rem 0.5rem;
+    background: rgba(99, 102, 241, 0.2);
+    color: #a5b4fc;
+    border-radius: 999px;
+    border: 1px solid rgba(99, 102, 241, 0.3);
+}
+
+.history-container {
+    margin-top: 0.75rem;
+    background: rgba(15, 23, 42, 0.45);
+    border: 1px solid var(--glass-border);
+    border-radius: 14px;
+    padding: 0.75rem;
+    animation: fadeIn 0.3s ease;
+}
+
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.history-title {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.text-link-btn {
+    background: transparent;
+    border: none;
+    color: #f87171;
+    font-size: 0.725rem;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    width: auto;
+    text-decoration: underline;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.text-link-btn:hover {
+    opacity: 1;
+    transform: none;
+    box-shadow: none;
+}
+
+.history-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: rgba(99, 102, 241, 0.15);
+    border: 1px solid rgba(99, 102, 241, 0.3);
+    color: #e0e7ff;
+    padding: 0.3rem 0.65rem;
+    border-radius: 8px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.chip:hover {
+    background: rgba(99, 102, 241, 0.3);
+    border-color: #818cf8;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px -2px rgba(99, 102, 241, 0.3);
+}
+
+.chip-lock-icon {
+    font-size: 0.75rem;
+    opacity: 0.7;
+}
+
+.chip-delete {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    margin-left: 0.25rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1;
+    transition: all 0.15s;
+}
+
+.chip-delete:hover {
+    background: rgba(239, 68, 68, 0.2);
+    color: #f87171;
+}
+
+.save-options {
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    padding: 0.85rem 1rem;
+    background: rgba(15, 23, 42, 0.35);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+}
+
+.custom-checkbox {
+    display: flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    font-size: 0.825rem;
+    color: #cbd5e1;
+    user-select: none;
+    margin: 0;
+}
+
+.custom-checkbox.sub-checkbox {
+    margin-left: 1.5rem;
+    color: var(--text-muted);
+}
+
+.custom-checkbox input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    height: 16px;
+    width: 16px;
+    background-color: rgba(15, 23, 42, 0.6);
+    border: 1px solid var(--glass-border);
+    border-radius: 4px;
+    margin-right: 0.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.custom-checkbox:hover input ~ .checkmark {
+    border-color: var(--primary);
+}
+
+.custom-checkbox input:checked ~ .checkmark {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.checkmark::after {
+    content: "";
+    display: none;
+    width: 4px;
+    height: 8px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    margin-bottom: 2px;
+}
+
+.custom-checkbox input:checked ~ .checkmark::after {
+    display: block;
+}
+
+.privacy-note {
+    font-size: 0.725rem;
+    color: #64748b;
+}
+
 .toggle-wrapper {
     position: relative;
     height: 42px;
@@ -149,7 +341,7 @@ button:active {
     align-items: center;
 }
 
-input[type="checkbox"] {
+.toggle-wrapper input[type="checkbox"] {
     display: none;
 }
 
@@ -176,11 +368,11 @@ input[type="checkbox"] {
     transition: 0.3s;
 }
 
-input[type="checkbox"]:checked + .toggle-label {
+.toggle-wrapper input[type="checkbox"]:checked + .toggle-label {
     background: var(--primary);
 }
 
-input[type="checkbox"]:checked + .toggle-label::after {
+.toggle-wrapper input[type="checkbox"]:checked + .toggle-label::after {
     left: calc(100% - 2px);
     transform: translateX(-100%);
 }
